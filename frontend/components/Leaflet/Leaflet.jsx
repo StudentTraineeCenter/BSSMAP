@@ -3,9 +3,11 @@ import {ExpoLeaflet} from "expo-leaflet";
 import * as Location from 'expo-location';
 import {View} from "react-native";
 import celltowers from "../../db/littleCelltowers.json";
+import Navbar from "../Navbar/Navbar";
 
 const Leaflet = () => {
 
+    const [provider, setProvider] = useState(null);
     const [userCurrentLocation, setUserCurrentLocation] = useState({
         coords: {
             latitude: 50,
@@ -50,8 +52,15 @@ const Leaflet = () => {
         }
     })
 
+    useEffect(() => {
+        console.log(provider)
+    }, [provider])
+
     return (
-        <View style={{backgroundColor: "black", height: "100%"}}>
+        <View style={{backgroundColor: "black", flex: 1}}>
+            <View style={{height: "10%"}}>
+                <Navbar func={(provider => setProvider(provider))}/>
+            </View>
             <ExpoLeaflet
                 backgroundColor={"white"}
                 onMessage={(message) => ""}
