@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {ExpoLeaflet} from "expo-leaflet";
 import * as Location from 'expo-location';
 import {View} from "react-native";
-import celltowers from "../../db/celltowers.json";
+import celltowers from "../../db/littleCelltowers.json";
 
 const Leaflet = () => {
 
@@ -39,16 +39,14 @@ const Leaflet = () => {
         },
     ]
 
-    const mapMarkers = Array.from(celltowers).map(tower => {
-        {
-            return {
-                position: {
-                    lat: tower.lat,
-                    lng: tower.lng
-                },
-                icon: '<span>🍇</span>',
-                size: [32, 32],
-            }
+    const mapMarkers = Array.from(celltowers).filter(tower => tower.operators.includes("hihi")).map(tower => {
+        return {
+            position: {
+                lat: tower.lat,
+                lng: tower.lng
+            },
+            icon: '<span>📡</span>',
+            size: [32, 32],
         }
     })
 

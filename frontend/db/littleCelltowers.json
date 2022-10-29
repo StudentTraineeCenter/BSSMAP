@@ -376,5 +376,11 @@
     "lng": 14.351330555556,
     "operators": ["tmobile", "o2"],
     "lte": true
+  },
+  {
+    "lat": 48.781608333333,
+    "lng": 14.351330555556,
+    "operators": ["hihi"],
+    "lte": true
   }
 ]
