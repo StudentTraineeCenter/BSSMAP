@@ -57,7 +57,7 @@ const Leaflet = () => {
 
     return (
         <View style={{backgroundColor: "black", flex: 1}}>
-            <View style={{height: "10%"}}>
+            <View style={{height: "12%"}}>
                 <Navbar func={(provider => setProvider(provider))}/>
             </View>
             <ExpoLeaflet
