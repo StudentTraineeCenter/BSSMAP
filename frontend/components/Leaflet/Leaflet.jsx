@@ -8,6 +8,7 @@ import Navbar from "../Navbar/Navbar";
 const Leaflet = () => {
 
     const [provider, setProvider] = useState(null);
+    const [mapMarkers, setMapMarkers] = useState(null);
     const [userCurrentLocation, setUserCurrentLocation] = useState({
         coords: {
             latitude: 50,
@@ -41,19 +42,17 @@ const Leaflet = () => {
         },
     ]
 
-    const mapMarkers = Array.from(celltowers).filter(tower => tower.operators.includes("hihi")).map(tower => {
-        return {
-            position: {
-                lat: tower.lat,
-                lng: tower.lng
-            },
-            icon: '<span>📡</span>',
-            size: [32, 32],
-        }
-    })
-
     useEffect(() => {
-        console.log(provider)
+        setMapMarkers(Array.from(celltowers).filter(tower => tower.operators.includes(provider === 1 ? "o2" : provider === 2 ? "tmobile" : provider === 3 ? "vodafone" : provider === 4 ? "poda" : null)).map(tower => {
+            return {
+                position: {
+                    lat: tower.lat,
+                    lng: tower.lng
+                },
+                icon: '<span>📡</span>',
+                size: [32, 32],
+            }
+        }))
     }, [provider])
 
     return (
