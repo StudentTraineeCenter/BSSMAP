@@ -1,0 +1,380 @@
+[
+  {
+    "lat": 48.589977777778,
+    "lng": 14.321338888889,
+    "operators": ["tmobile", "o2", "vodafone"],
+    "lte": true
+  },
+  {
+    "lat": 48.604658333333,
+    "lng": 14.238863888889,
+    "operators": ["tmobile", "o2", "vodafone"],
+    "lte": true
+  },
+  {
+    "lat": 48.608641666667,
+    "lng": 14.306355555556,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.613636111111,
+    "lng": 14.407447222222,
+    "operators": ["tmobile", "o2", "vodafone"],
+    "lte": true
+  },
+  {
+    "lat": 48.621630555556,
+    "lng": 14.174661111111,
+    "operators": ["tmobile", "o2", "vodafone"],
+    "lte": true
+  },
+  {
+    "lat": 48.636636111111,
+    "lng": 14.381977777778,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.639980555556,
+    "lng": 14.234108333333,
+    "operators": ["tmobile", "o2", "vodafone"],
+    "lte": true
+  },
+  {
+    "lat": 48.644786111111,
+    "lng": 14.104008333333,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.646311111111,
+    "lng": 14.441494444444,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.657213888889,
+    "lng": 14.177544444444,
+    "operators": ["tmobile", "o2", "vodafone"],
+    "lte": true
+  },
+  {
+    "lat": 48.657427777778,
+    "lng": 14.367980555556,
+    "operators": ["tmobile", "o2", "vodafone"],
+    "lte": true
+  },
+  {
+    "lat": 48.670644444444,
+    "lng": 14.637091666667,
+    "operators": ["tmobile", "o2", "vodafone"],
+    "lte": true
+  },
+  {
+    "lat": 48.676944444444,
+    "lng": 14.288372222222,
+    "operators": ["tmobile", "o2", "vodafone"],
+    "lte": true
+  },
+  {
+    "lat": 48.685322222222,
+    "lng": 14.577025,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.687072222222,
+    "lng": 16.987711111111,
+    "operators": ["tmobile", "o2", "vodafone"],
+    "lte": true
+  },
+  {
+    "lat": 48.687797222222,
+    "lng": 14.147166666667,
+    "operators": ["tmobile", "o2", "vodafone"],
+    "lte": true
+  },
+  {
+    "lat": 48.693038888889,
+    "lng": 14.459163888889,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.698061111111,
+    "lng": 14.079419444444,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.699261111111,
+    "lng": 14.378030555556,
+    "operators": ["tmobile", "o2", "vodafone"],
+    "lte": true
+  },
+  {
+    "lat": 48.7104,
+    "lng": 14.466080555556,
+    "operators": ["tmobile", "o2", "vodafone"],
+    "lte": true
+  },
+  {
+    "lat": 48.718925,
+    "lng": 14.552730555556,
+    "operators": ["tmobile", "o2", "vodafone"],
+    "lte": true
+  },
+  {
+    "lat": 48.722666666667,
+    "lng": 14.325888888889,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.724263888889,
+    "lng": 16.967038888889,
+    "operators": ["tmobile", "o2", "vodafone"],
+    "lte": true
+  },
+  {
+    "lat": 48.729758333333,
+    "lng": 14.209733333333,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.730883333333,
+    "lng": 14.637380555556,
+    "operators": ["tmobile", "o2", "vodafone"],
+    "lte": true
+  },
+  {
+    "lat": 48.730911111111,
+    "lng": 14.719863888889,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.732091666667,
+    "lng": 14.016375,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.733919444444,
+    "lng": 16.976119444444,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.736647222222,
+    "lng": 14.10235,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.739394444444,
+    "lng": 16.863613888889,
+    "operators": ["tmobile", "o2", "vodafone"],
+    "lte": true
+  },
+  {
+    "lat": 48.740791666667,
+    "lng": 16.750975,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.740886111111,
+    "lng": 14.488063888889,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.749605555556,
+    "lng": 16.386933333333,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.749716666667,
+    "lng": 16.77375,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.750166666667,
+    "lng": 16.851083333333,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.751891666667,
+    "lng": 16.879325,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.754058333333,
+    "lng": 16.895947222222,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.754072222222,
+    "lng": 14.420027777778,
+    "operators": ["tmobile", "o2", "vodafone"],
+    "lte": true
+  },
+  {
+    "lat": 48.755469444444,
+    "lng": 16.888519444444,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.757722222222,
+    "lng": 16.858855555556,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.758116666667,
+    "lng": 14.335725,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.759661111111,
+    "lng": 16.225975,
+    "operators": ["tmobile", "o2", "vodafone"],
+    "lte": true
+  },
+  {
+    "lat": 48.759663888889,
+    "lng": 16.881786111111,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.760202777778,
+    "lng": 14.731544444444,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.760788888889,
+    "lng": 16.386433333333,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.760916666667,
+    "lng": 16.99235,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.760955555556,
+    "lng": 16.081388888889,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.763961111111,
+    "lng": 16.896861111111,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.764858333333,
+    "lng": 14.712666666667,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.766283333333,
+    "lng": 16.884472222222,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.766580555556,
+    "lng": 14.032175,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.770716666667,
+    "lng": 14.964852777778,
+    "operators": ["tmobile", "o2", "vodafone"],
+    "lte": true
+  },
+  {
+    "lat": 48.771130555556,
+    "lng": 16.761213888889,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.773761111111,
+    "lng": 16.279063888889,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.774402777778,
+    "lng": 14.459447222222,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.77555,
+    "lng": 14.292716666667,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.7781,
+    "lng": 16.903527777778,
+    "operators": ["tmobile", "o2", "vodafone"],
+    "lte": true
+  },
+  {
+    "lat": 48.778144444444,
+    "lng": 14.193927777778,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.778225,
+    "lng": 14.086080555556,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.778491666667,
+    "lng": 14.972952777778,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.779097222222,
+    "lng": 16.945163888889,
+    "operators": ["tmobile"],
+    "lte": true
+  },
+  {
+    "lat": 48.779825,
+    "lng": 14.637008333333,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  },
+  {
+    "lat": 48.781608333333,
+    "lng": 14.351330555556,
+    "operators": ["tmobile", "o2"],
+    "lte": true
+  }
+]
