@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {ExpoLeaflet} from "expo-leaflet";
 import * as Location from 'expo-location';
 import {View} from "react-native";
-import celltowers from "../../db/littleCelltowers.json";
+import celltowers from "../../db/celltowers.json";
 import Navbar from "../Navbar/Navbar";
 
 const Leaflet = () => {
@@ -43,16 +43,19 @@ const Leaflet = () => {
     ]
 
     useEffect(() => {
-        setMapMarkers(Array.from(celltowers).filter(tower => tower.operators.includes(provider === 1 ? "o2" : provider === 2 ? "tmobile" : provider === 3 ? "vodafone" : provider === 4 ? "poda" : null)).map(tower => {
-            return {
-                position: {
-                    lat: tower.lat,
-                    lng: tower.lng
-                },
-                icon: '<span>📡</span>',
-                size: [32, 32],
-            }
-        }))
+        setMapMarkers(Array.from(celltowers)
+            .filter(tower => tower.operators.includes(provider === 1 ? "o2" : provider === 2 ? "tmobile" : provider === 3 ? "vodafone" : provider === 4 ? "poda" : null))
+            .filter(tower => userCurrentLocation.coords.longitude + 0.1 > tower.lng && userCurrentLocation.coords.longitude - 0.1 < tower.lng && userCurrentLocation.coords.latitude + 0.1 > tower.lat && userCurrentLocation.coords.latitude - 0.1 < tower.lat)
+            .map(tower => {
+                return {
+                    position: {
+                        lat: tower.lat,
+                        lng: tower.lng
+                    },
+                    icon: '<span>📡</span>',
+                    size: [32, 32],
+                }
+            }))
     }, [provider])
 
     return (
