@@ -50,9 +50,9 @@ const Leaflet = () => {
             case 0:
                 return mid;
             case 1:
-                return biSearch(array, condition, start, mid + 1);
+                return biSearch(array, condition, start, mid + 1, ...funcParameters);
             case -1:
-                return biSearch(array, condition, mid - 1, end);
+                return biSearch(array, condition, mid - 1, end, ...funcParameters);
         }
         throw Error("condition output is not -1, 0 or 1!!!");
     }
@@ -64,25 +64,33 @@ const Leaflet = () => {
         while (result.length === 0) {
             temp--;
             if (array[temp].lat < userCurrentLocation.coords.latitude - offset) result.push(temp + 1);
-            if (array[temp] === undefined) throw Error("Index out of range of array");
+            if (array[temp] === undefined) result.push(temp + 1);
         }
         // looks at bigger indexes if they still count
         temp = index;
         while (result.length === 1) {
             temp++;
             if (array[temp].lat > userCurrentLocation.coords.latitude + offset) result.push(temp - 1);
-            if (array[temp] === undefined) throw Error("Index out of range of array");
+            if (array[temp] === undefined) result.push(temp - 1);
         }
+        console.log(result)
         return array.slice(...result);
     }
+
+
+    // the ofset of how far from user it should look
+    const offset = 0.1;
+    // multiplies longitude with this to change ratio of sides
+    const offsetShape = 1.6;
+
     // makes an array of towers with chosen operator
-    let celltowersOperator = Array.from(celltowers).filter((tower) =>
+    const celltowersOperator = Array.from(celltowers).filter((tower) =>
         tower.operators.includes(provider === 1 ? "o2" : provider === 2 ? "tmobile" : provider === 3 ? "vodafone" : provider === 4 ? "poda" : null)
     );
     // searches the array to ectract only the ones near the user
-    let celltowersNearBy = []
+    let celltowersNearBy = [];
     if (celltowersOperator.length > 0) {
-        let location = biSearch(
+        const location = biSearch(
             celltowersOperator,
             (lat, offset) => {
                 // returns 1 if the towers lat is bigger then users position + offset, -1 when smaller and 0 if its within
@@ -90,25 +98,55 @@ const Leaflet = () => {
             },
             0,
             celltowersOperator.length - 1,
-            0.1
+            offset
         );
 
-        celltowersNearBy = linearSearchSubArray(celltowersOperator, location, 0.1).filter((tower) => {return userCurrentLocation.coords.longitude + 0.1 > tower.lng && userCurrentLocation.coords.longitude - 0.1 < tower.lng; });
+        celltowersNearBy = linearSearchSubArray(celltowersOperator, location, offset).filter((tower) => {
+            return (
+                userCurrentLocation.coords.longitude + offset * offsetShape > tower.lng &&
+                userCurrentLocation.coords.longitude - offset * offsetShape < tower.lng
+            );
+        });
     }
 
 
     useEffect(() => {
         setMapMarkers(
-            celltowersNearBy.map((tower) => {
-                return {
+            celltowersNearBy
+                .map((tower) => {
+                    return {
+                        position: {
+                            lat: tower.lat,
+                            lng: tower.lng,
+                        },
+                        icon: "<span>📡</span>",
+                        size: [32, 32],
+                    };
+                })
+                .concat({
                     position: {
-                        lat: tower.lat,
-                        lng: tower.lng,
+                        lat: userCurrentLocation.coords.latitude,
+                        lng: userCurrentLocation.coords.longitude,
                     },
-                    icon: "<span>📡</span>",
+                    icon: "<span>📍</span>",
                     size: [32, 32],
-                };
-            })
+                })
+                .concat({
+                    position: {
+                        lat: userCurrentLocation.coords.latitude + offset,
+                        lng: userCurrentLocation.coords.longitude,
+                    },
+                    icon: "<span>📍</span>",
+                    size: [32, 32],
+                })
+                .concat({
+                    position: {
+                        lat: userCurrentLocation.coords.latitude,
+                        lng: userCurrentLocation.coords.longitude + offset * offsetShape,
+                    },
+                    icon: "<span>📍</span>",
+                    size: [32, 32],
+                })
         );
     }, [provider])
 
