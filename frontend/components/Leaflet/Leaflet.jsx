@@ -73,7 +73,6 @@ const Leaflet = () => {
             if (array[temp].lat > userCurrentLocation.coords.latitude + offset) result.push(temp - 1);
             if (array[temp] === undefined) result.push(temp - 1);
         }
-        console.log(result)
         return array.slice(...result);
     }
 
@@ -128,24 +127,8 @@ const Leaflet = () => {
                         lat: userCurrentLocation.coords.latitude,
                         lng: userCurrentLocation.coords.longitude,
                     },
-                    icon: "<span>📍</span>",
-                    size: [32, 32],
-                })
-                .concat({
-                    position: {
-                        lat: userCurrentLocation.coords.latitude + offset,
-                        lng: userCurrentLocation.coords.longitude,
-                    },
-                    icon: "<span>📍</span>",
-                    size: [32, 32],
-                })
-                .concat({
-                    position: {
-                        lat: userCurrentLocation.coords.latitude,
-                        lng: userCurrentLocation.coords.longitude + offset * offsetShape,
-                    },
-                    icon: "<span>📍</span>",
-                    size: [32, 32],
+                    icon: "<span>🔴</span>",
+                    size: [16, 16],
                 })
         );
     }, [provider])
@@ -164,7 +147,7 @@ const Leaflet = () => {
                     lat: userCurrentLocation.coords.latitude,
                     lng: userCurrentLocation.coords.longitude,
                 }}
-                zoom={10}
+                zoom={15}
             />
         </View>
     )
