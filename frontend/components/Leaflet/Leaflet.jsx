@@ -4,6 +4,7 @@ import * as Location from 'expo-location';
 import {View} from "react-native";
 import celltowers from "../../db/celltowers.json";
 import Navbar from "../Navbar/Navbar";
+import {Gyroscope} from 'expo-sensors';
 
 const Leaflet = () => {
 
@@ -15,8 +16,40 @@ const Leaflet = () => {
             longitude: 15
         }
     });
-
     const [locationNotGranted, setLocationNotGranted] = useState(null);
+    const [threeAxisData, setThreeAxisData] = useState({
+        x: 0,
+        y: 0,
+        z: 0,
+    });
+    const [subscription, setSubscription] = useState(null);
+
+    const _fast = () => {
+        Gyroscope.setUpdateInterval(16);
+    };
+
+    const _subscribe = () => {
+        setSubscription(
+            Gyroscope.addListener(gyroscopeData => {
+                setThreeAxisData(gyroscopeData);
+            })
+        );
+    };
+
+    const _unsubscribe = () => {
+        subscription && subscription.remove();
+        setSubscription(null);
+    };
+
+    useEffect(() => {
+        _fast();
+        _subscribe();
+        return () => _unsubscribe();
+    }, []);
+
+    useEffect(() => {
+        console.log(threeAxisData)
+    }, [threeAxisData])
 
     useEffect(() => {
 
@@ -32,6 +65,10 @@ const Leaflet = () => {
         getCurrentPosition().then((location) => setUserCurrentLocation(location))
 
     }, []);
+
+    useEffect(() => {
+        console.log(userCurrentLocation)
+    }, [userCurrentLocation])
 
     const mapLayers = [
         {
@@ -56,8 +93,9 @@ const Leaflet = () => {
         }
         throw Error("condition output is not -1, 0 or 1!!!");
     }
+
     // Slices array so that only the towers within the lat offset are left
-    function linearSearchSubArray(array, index, offset){
+    function linearSearchSubArray(array, index, offset) {
         let result = [];
         // looks at smaller indexes if they still count
         let temp = index;
