@@ -12,10 +12,11 @@ const Leaflet = () => {
     const [mapMarkers, setMapMarkers] = useState(null);
     const [userCurrentLocation, setUserCurrentLocation] = useState({
         coords: {
-            latitude: 50,
-            longitude: 15
+            latitude: 49.88865,
+            longitude: 15.41015
         }
     });
+    const [locationLoaded, setLocationLoaded] = useState(false);
     const [locationNotGranted, setLocationNotGranted] = useState(null);
     const [threeAxisData, setThreeAxisData] = useState({
         x: 0,
@@ -58,7 +59,10 @@ const Leaflet = () => {
 
             return Location.getCurrentPositionAsync({});
         }
-        getCurrentPosition().then((location) => setUserCurrentLocation(location))
+        getCurrentPosition().then((location) => {
+            setUserCurrentLocation(location)
+            setLocationLoaded(true);
+        })
 
     }, []);
 
@@ -99,9 +103,9 @@ const Leaflet = () => {
                 mapMarkers={mapMarkers}
                 mapCenterPosition={{
                     lat: userCurrentLocation.coords.latitude,
-                    lng: userCurrentLocation.coords.longitude,
+                    lng: userCurrentLocation.coords.longitude
                 }}
-                zoom={15}
+                zoom={locationLoaded ? 15 : 6}
             />
         </View>
     )
