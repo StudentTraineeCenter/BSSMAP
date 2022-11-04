@@ -4,7 +4,6 @@ import * as Location from 'expo-location';
 import {View} from "react-native";
 import celltowers from "../../db/celltowers.json";
 import Navbar from "../Navbar/Navbar";
-import {Gyroscope} from 'expo-sensors';
 
 const Leaflet = () => {
 
@@ -18,35 +17,6 @@ const Leaflet = () => {
     });
     const [locationLoaded, setLocationLoaded] = useState(false);
     const [locationNotGranted, setLocationNotGranted] = useState(null);
-    const [threeAxisData, setThreeAxisData] = useState({
-        x: 0,
-        y: 0,
-        z: 0,
-    });
-    const [subscription, setSubscription] = useState(null);
-
-    const _fast = () => {
-        Gyroscope.setUpdateInterval(16);
-    };
-
-    const _subscribe = () => {
-        setSubscription(
-            Gyroscope.addListener(gyroscopeData => {
-                setThreeAxisData(gyroscopeData);
-            })
-        );
-    };
-
-    const _unsubscribe = () => {
-        subscription && subscription.remove();
-        setSubscription(null);
-    };
-
-    useEffect(() => {
-        _fast();
-        _subscribe();
-        return () => _unsubscribe();
-    }, []);
 
     useEffect(() => {
 
