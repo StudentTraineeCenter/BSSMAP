@@ -38,7 +38,7 @@ export default function App() {
     return (
         <NavigationContainer>
             <Stack.Navigator>
-                <Stack.Screen name="Wellcome" component={Welcome} options={{headerShown: false}}/>
+                <Stack.Screen name="Welcome" component={Welcome} options={{headerShown: false}}/>
                 <Stack.Screen name="Map" component={Leaflet} options={{headerShown: false}}/>
                 <Stack.Screen name="Compass" component={Compass} options={{headerShown: false}}/>
             </Stack.Navigator>
