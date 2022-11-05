@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {Pressable, StyleSheet, Text, View} from "react-native";
+import { useNavigation } from '@react-navigation/native';
 
 const Navbar = (props) => {
 
     const [provider, setProvider] = useState(-1);
+    const navigation = useNavigation();
 
     useEffect(() => {
         props.func(provider);
@@ -42,6 +44,9 @@ const Navbar = (props) => {
                     fontWeight: 'bold',
                     color: 'white'
                 } : styles.providerText}>poda</Text>
+            </Pressable>
+            <Pressable onPress={() => navigation.navigate('Compass')}>
+                <Text>Compass</Text>
             </Pressable>
         </View>
     )

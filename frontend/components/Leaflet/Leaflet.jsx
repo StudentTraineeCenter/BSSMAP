@@ -17,6 +17,12 @@ const Leaflet = () => {
     });
     const [locationLoaded, setLocationLoaded] = useState(false);
     const [locationNotGranted, setLocationNotGranted] = useState(null);
+    const [closestMarker, setClosestMarker] = useState({
+        coords: {
+            latitude: 100,
+            longitude: 100
+        }
+    });
 
     useEffect(() => {
 
@@ -61,6 +67,40 @@ const Leaflet = () => {
             }))
     }, [provider])
 
+    useEffect(() => {
+        if (mapMarkers === null || mapMarkers === undefined || mapMarkers[0] === undefined) return;
+
+        setClosestMarker({
+            coords: {
+                latitude: mapMarkers[0].position.lat,
+                longitude: mapMarkers[0].position.lng
+            }
+        })
+
+        mapMarkers.forEach((marker) => {
+            let distanceUserMarkerLat = Math.abs(userCurrentLocation.coords.latitude - marker.position.lat)
+            let distanceUserMarkerLng = Math.abs(userCurrentLocation.coords.longitude - marker.position.lng)
+
+            let distanceUserCurrentClosestMarkerLng = Math.abs(userCurrentLocation.coords.longitude - closestMarker.coords.longitude)
+            let distanceUserCurrentClosestMarkerLat = Math.abs(userCurrentLocation.coords.latitude - closestMarker.coords.latitude)
+
+            console.log("/// NEW CYCLE ///")
+            console.log("Distance of the current cycled marker from the user's position LAT: " + distanceUserMarkerLat)
+            console.log("Distance of the current cycled marker from the user's position LNG: " + distanceUserMarkerLng)
+            console.log("Distance of the closest marker from the user's position LAT: " + distanceUserCurrentClosestMarkerLat)
+            console.log("Distance of the closest marker from the user's position LNG: " + distanceUserCurrentClosestMarkerLng)
+
+            if (distanceUserMarkerLat + distanceUserMarkerLng < distanceUserCurrentClosestMarkerLat + distanceUserCurrentClosestMarkerLng)
+                setClosestMarker({
+                    coords: {
+                        latitude: marker.position.lat,
+                        longitude: marker.position.lng
+                    }
+                })
+        })
+
+    }, [mapMarkers])
+
     return (
         <View style={{backgroundColor: "black", flex: 1}}>
             <View style={{height: "12%"}}>
@@ -70,7 +110,14 @@ const Leaflet = () => {
                 backgroundColor={"white"}
                 onMessage={(message) => ""}
                 mapLayers={mapLayers}
-                mapMarkers={mapMarkers}
+                mapMarkers={mapMarkers ? mapMarkers.concat({
+                    position: {
+                        lat: closestMarker.coords.latitude,
+                        lng: closestMarker.coords.longitude
+                    },
+                    icon: '<span>🦄</span>',
+                    size: [32, 32],
+                }) : null}
                 mapCenterPosition={{
                     lat: userCurrentLocation.coords.latitude,
                     lng: userCurrentLocation.coords.longitude
