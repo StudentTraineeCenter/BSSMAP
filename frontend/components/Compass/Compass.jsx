@@ -2,6 +2,8 @@ import React, {useEffect, useState} from "react";
 import {Text, View} from "react-native";
 import {Gyroscope} from 'expo-sensors';
 
+import { defaultStyles } from "../styles/defaultStyles";
+
 const Compass = () => {
 
     const [threeAxisData, setThreeAxisData] = useState({
@@ -41,7 +43,7 @@ const Compass = () => {
 
     return (
         <View style={{backgroundColor: "white", flex: 1, justifyContent: "center", alignItems: "center"}}>
-            <Text>{angleX < 0 ? "Turn left" : "Turn right"}</Text>
+            <Text style={defaultStyles.Text}>{angleX < 0 ? "Turn left" : "Turn right"}</Text>
         </View>
     )
 }

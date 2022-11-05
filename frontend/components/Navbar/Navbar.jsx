@@ -2,6 +2,8 @@ import React, {useEffect, useState} from "react";
 import {Pressable, StyleSheet, Text, View} from "react-native";
 import { useNavigation } from '@react-navigation/native';
 
+import { defaultStyles } from "../styles/defaultStyles";
+
 const Navbar = (props) => {
 
     const [provider, setProvider] = useState(-1);
@@ -19,7 +21,7 @@ const Navbar = (props) => {
                     fontSize: 20,
                     fontWeight: 'bold',
                     color: 'white'
-                } : styles.providerText}>O2</Text>
+                } : StyleSheet.compose(defaultStyles.Text, styles.providerText)}>O2</Text>
             </Pressable>
             <Pressable style={provider === 2 ? {backgroundColor: '#e80474', borderRadius: 5, marginBottom: 5} : null}
                        onPress={() => setProvider(provider === 2 ? -1 : 2)}>
@@ -27,7 +29,7 @@ const Navbar = (props) => {
                     fontSize: 20,
                     fontWeight: 'bold',
                     color: 'white'
-                } : styles.providerText}>tmobile</Text>
+                } : StyleSheet.compose(defaultStyles.Text, styles.providerText)}>tmobile</Text>
             </Pressable>
             <Pressable style={provider === 3 ? {backgroundColor: '#e60000', borderRadius: 5, marginBottom: 5} : null}
                        onPress={() => setProvider(provider === 3 ? -1 : 3)}>
@@ -35,7 +37,7 @@ const Navbar = (props) => {
                     fontSize: 20,
                     fontWeight: 'bold',
                     color: 'white'
-                } : styles.providerText}>vodafone</Text>
+                } : StyleSheet.compose(defaultStyles.Text, styles.providerText)}>vodafone</Text>
             </Pressable>
             <Pressable style={provider === 4 ? {backgroundColor: '#049dd9', borderRadius: 5, marginBottom: 5} : null}
                        onPress={() => setProvider(provider === 4 ? -1 : 4)}>
@@ -43,10 +45,10 @@ const Navbar = (props) => {
                     fontSize: 20,
                     fontWeight: 'bold',
                     color: 'white'
-                } : styles.providerText}>poda</Text>
+                } : StyleSheet.compose(defaultStyles.Text, styles.providerText)}>poda</Text>
             </Pressable>
             <Pressable onPress={() => navigation.navigate('Compass')}>
-                <Text>Compass</Text>
+                <Text style={defaultStyles.Text}>Compass</Text>
             </Pressable>
         </View>
     )
@@ -61,8 +63,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     providerText: {
-        fontSize: 20,
-        fontWeight: "bold"
+        fontFamily: "bold",
     }
 });
 
