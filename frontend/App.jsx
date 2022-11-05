@@ -7,7 +7,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { View } from 'react-native';
 
-// import { customFonts } from './components/styles/defaultStyles';
+import Welcome from './components/Welcome/Welcome';
 
 export default function App() {
     const [fontsLoaded] = useFonts({
@@ -38,8 +38,9 @@ export default function App() {
     return (
         <NavigationContainer>
             <Stack.Navigator>
-                <Stack.Screen name="Map" component={Leaflet} options={{ headerShown: false }} />
-                <Stack.Screen name="Compass" component={Compass} options={{ headerShown: false }} />
+                <Stack.Screen name="Wellcome" component={Welcome} options={{headerShown: false}}/>
+                <Stack.Screen name="Map" component={Leaflet} options={{headerShown: false}}/>
+                <Stack.Screen name="Compass" component={Compass} options={{headerShown: false}}/>
             </Stack.Navigator>
 
             <View onLayout={onLayoutRootView}></View>
