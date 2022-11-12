@@ -83,25 +83,30 @@ const Leaflet = () => {
     }, [celltowersInRange])
 
     useEffect(() => {
-        if (celltowersInRange === null || celltowersInRange === undefined || celltowersInRange[0] === undefined) {
-            setClosestMarker(null);
+        if (mapMarkers === null || mapMarkers === undefined || mapMarkers[0] === undefined) {
+            setClosestMarker({
+                position:{
+                    lat: null,
+                    lng: null,
+                }
+            });
             return
         }
 
         // console.log("");
         // console.log("");
         // console.log("---Start of new search---");
-        // console.log(celltowersInRange[0], userLoc);
+        // console.log(mapMarkers[0], userLoc);
 
         let tempClosestMarker = {
             position: {
-                lat: celltowersInRange[0].lat,
-                lng: celltowersInRange[0].lng
+                lat: mapMarkers[0].position.lat,
+                lng: mapMarkers[0].position.lng
             }
         };
-
-        celltowersInRange.forEach((tower) => {
-            let currentDist = [Math.abs(userLoc.position.lat - tower.lat), Math.abs(userLoc.position.lng - tower.lng)];
+        
+        mapMarkers.forEach((marker, index) => {
+            let currentDist = [Math.abs(userLoc.position.lat - marker.position.lat), Math.abs(userLoc.position.lng - marker.position.lng)];
 
             let closestDist = [Math.abs(userLoc.position.lat - tempClosestMarker.position.lat), Math.abs(userLoc.position.lng - tempClosestMarker.position.lng)];
 
@@ -113,16 +118,23 @@ const Leaflet = () => {
                 // console.log("|||CHANGED CLOSEST CELLTOWER|||");
                 tempClosestMarker = {
                     position: {
-                        lat: tower.lat,
-                        lng: tower.lng
-                    }
+                        lat: marker.position.lat,
+                        lng: marker.position.lng
+                    },
+                    index: index
                 };
             }
         });
 
-        setClosestMarker(tempClosestMarker);
+        setClosestMarker({
+            position: {
+                lat: tempClosestMarker.position.lat,
+                lng: tempClosestMarker.position.lng
+            }
+        });
+        mapMarkers.splice(tempClosestMarker.index, 1);
 
-    }, [celltowersInRange, userLoc]);
+    }, [mapMarkers, userLoc]);
 
     return (
         <View style={{backgroundColor: "black", flex: 1}}>
