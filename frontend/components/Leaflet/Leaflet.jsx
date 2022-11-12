@@ -9,18 +9,19 @@ const Leaflet = () => {
 
     const [provider, setProvider] = useState(null);
     const [mapMarkers, setMapMarkers] = useState(null);
-    const [userCurrentLocation, setUserCurrentLocation] = useState({
-        coords: {
-            latitude: 49.88865,
-            longitude: 15.41015
+    const [userLoc, setuserLoc] = useState({
+        position: {
+            lat: 49.88865,
+            lng: 15.41015
         }
     });
+    const [celltowersInRange, setCelltowersInRange] = useState(null);
     const [locationLoaded, setLocationLoaded] = useState(false);
     const [locationNotGranted, setLocationNotGranted] = useState(null);
     const [closestMarker, setClosestMarker] = useState({
-        coords: {
-            latitude: 100,
-            longitude: 100
+        position: {
+            lat: null,
+            lng: null
         }
     });
 
@@ -35,10 +36,16 @@ const Leaflet = () => {
 
             return Location.getCurrentPositionAsync({});
         }
+
         getCurrentPosition().then((location) => {
-            setUserCurrentLocation(location)
+            setuserLoc({
+                    position: {
+                        lat: location.coords.latitude,
+                        lng: location.coords.longitude
+                    }
+                });
             setLocationLoaded(true);
-        })
+        });
 
     }, []);
 
@@ -49,57 +56,73 @@ const Leaflet = () => {
             baseLayerName: "OpenStreetMap.Mapnik",
             url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         },
-    ]
+    ];
 
     useEffect(() => {
-        setMapMarkers(Array.from(celltowers)
+        setCelltowersInRange(Array.from(celltowers)
             .filter(tower => tower.operators.includes(provider === 1 ? "o2" : provider === 2 ? "tmobile" : provider === 3 ? "vodafone" : provider === 4 ? "poda" : null))
-            .filter(tower => userCurrentLocation.coords.longitude + 0.16 > tower.lng && userCurrentLocation.coords.longitude - 0.16 < tower.lng && userCurrentLocation.coords.latitude + 0.1 > tower.lat && userCurrentLocation.coords.latitude - 0.1 < tower.lat)
-            .map(tower => {
-                return {
+            .filter(tower => userLoc.position.lng + 0.16 > tower.lng && userLoc.position.lng - 0.16 < tower.lng && userLoc.position.lat + 0.1 > tower.lat && userLoc.position.lat - 0.1 < tower.lat));
+    }, [provider]);
+
+    useEffect(() => {
+        if (celltowersInRange === null || celltowersInRange === undefined || celltowersInRange[0] === undefined) {
+            setMapMarkers([]);
+            return
+        }
+
+        setMapMarkers(celltowersInRange.map(tower => {
+            return {
+                position: {
+                    lat: tower.lat,
+                    lng: tower.lng
+                },
+                icon: '<span>📡</span>',
+                size: [32, 32],
+            }
+        }));
+    }, [celltowersInRange])
+
+    useEffect(() => {
+        if (celltowersInRange === null || celltowersInRange === undefined || celltowersInRange[0] === undefined) {
+            setClosestMarker(null);
+            return
+        }
+
+        // console.log("");
+        // console.log("");
+        // console.log("---Start of new search---");
+        // console.log(celltowersInRange[0], userLoc);
+
+        let tempClosestMarker = {
+            position: {
+                lat: celltowersInRange[0].lat,
+                lng: celltowersInRange[0].lng
+            }
+        };
+
+        celltowersInRange.forEach((tower) => {
+            let currentDist = [Math.abs(userLoc.position.lat - tower.lat), Math.abs(userLoc.position.lng - tower.lng)];
+
+            let closestDist = [Math.abs(userLoc.position.lat - tempClosestMarker.position.lat), Math.abs(userLoc.position.lng - tempClosestMarker.position.lng)];
+
+            // console.log("/// NEW CYCLE ///");
+            // console.log("Current cycled marker's distance from the user:", currentDist, Math.sqrt(currentDist[0]**2 + currentDist[1]**2));
+            // console.log("Closest marker's distance from the user:", closestDist, Math.sqrt(closestDist[0]**2 + closestDist[1]**2));
+
+            if (Math.sqrt(currentDist[0]**2 + currentDist[1]**2) < Math.sqrt(closestDist[0]**2 + closestDist[1]**2)){
+                // console.log("|||CHANGED CLOSEST CELLTOWER|||");
+                tempClosestMarker = {
                     position: {
                         lat: tower.lat,
                         lng: tower.lng
-                    },
-                    icon: '<span>📡</span>',
-                    size: [32, 32],
-                }
-            }))
-    }, [provider])
-
-    useEffect(() => {
-        if (mapMarkers === null || mapMarkers === undefined || mapMarkers[0] === undefined) return;
-
-        setClosestMarker({
-            coords: {
-                latitude: mapMarkers[0].position.lat,
-                longitude: mapMarkers[0].position.lng
-            }
-        })
-
-        mapMarkers.forEach((marker) => {
-            let distanceUserMarkerLat = Math.abs(userCurrentLocation.coords.latitude - marker.position.lat)
-            let distanceUserMarkerLng = Math.abs(userCurrentLocation.coords.longitude - marker.position.lng)
-
-            let distanceUserCurrentClosestMarkerLng = Math.abs(userCurrentLocation.coords.longitude - closestMarker.coords.longitude)
-            let distanceUserCurrentClosestMarkerLat = Math.abs(userCurrentLocation.coords.latitude - closestMarker.coords.latitude)
-
-            console.log("/// NEW CYCLE ///")
-            console.log("Distance of the current cycled marker from the user's position LAT: " + distanceUserMarkerLat)
-            console.log("Distance of the current cycled marker from the user's position LNG: " + distanceUserMarkerLng)
-            console.log("Distance of the closest marker from the user's position LAT: " + distanceUserCurrentClosestMarkerLat)
-            console.log("Distance of the closest marker from the user's position LNG: " + distanceUserCurrentClosestMarkerLng)
-
-            if (distanceUserMarkerLat + distanceUserMarkerLng < distanceUserCurrentClosestMarkerLat + distanceUserCurrentClosestMarkerLng)
-                setClosestMarker({
-                    coords: {
-                        latitude: marker.position.lat,
-                        longitude: marker.position.lng
                     }
-                })
-        })
+                };
+            }
+        });
 
-    }, [mapMarkers])
+        setClosestMarker(tempClosestMarker);
+
+    }, [celltowersInRange, userLoc]);
 
     return (
         <View style={{backgroundColor: "black", flex: 1}}>
@@ -110,22 +133,36 @@ const Leaflet = () => {
                 backgroundColor={"white"}
                 onMessage={(message) => ""}
                 mapLayers={mapLayers}
-                mapMarkers={mapMarkers ? mapMarkers.concat({
+                mapMarkers={Array.isArray(mapMarkers) && mapMarkers.length > 0 ? mapMarkers.concat({
                     position: {
-                        lat: closestMarker.coords.latitude,
-                        lng: closestMarker.coords.longitude
+                        lat: closestMarker.position.lat,
+                        lng: closestMarker.position.lng
                     },
                     icon: '<span>🦄</span>',
                     size: [32, 32],
-                }) : null}
+                }).concat({
+                    position: {
+                        lat: userLoc.position.lat,
+                        lng: userLoc.position.lng,
+                    },
+                    icon: '<span>📍</span>',
+                    size: [32, 32],
+                }) : locationLoaded ? [{
+                    position: {
+                        lat: userLoc.position.lat,
+                        lng: userLoc.position.lng,
+                    },
+                    icon: '<span>📍</span>',
+                    size: [32, 32],
+                }] : []}
                 mapCenterPosition={{
-                    lat: userCurrentLocation.coords.latitude,
-                    lng: userCurrentLocation.coords.longitude
+                    lat: userLoc.position.lat,
+                    lng: userLoc.position.lng
                 }}
                 zoom={locationLoaded ? 15 : 6}
             />
         </View>
-    )
+    );
 
 }
 
