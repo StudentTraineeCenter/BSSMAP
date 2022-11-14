@@ -6,7 +6,6 @@ import celltowers from "../../db/celltowers.json";
 import Navbar from "../Navbar/Navbar";
 
 const Leaflet = () => {
-
     const [provider, setProvider] = useState(null);
     const [mapMarkers, setMapMarkers] = useState(null);
     const [userLoc, setuserLoc] = useState({
@@ -138,8 +137,10 @@ const Leaflet = () => {
 
     return (
         <View style={{backgroundColor: "black", flex: 1}}>
-            <View style={{height: "12%"}}>
-                <Navbar func={(provider => setProvider(provider))}/>
+            <View>
+                <Navbar func={((provider) => {
+                setProvider(provider);
+            })}/>
             </View>
             <ExpoLeaflet
                 backgroundColor={"white"}

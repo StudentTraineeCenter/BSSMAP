@@ -5,9 +5,13 @@ import Compass from "./components/Compass/Compass";
 import { useEffect, useCallback } from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 
 import Welcome from './components/Welcome/Welcome';
+
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
     const [fontsLoaded] = useFonts({
@@ -32,18 +36,24 @@ export default function App() {
         return null;
     }
 
-
-    const Stack = createNativeStackNavigator();
-
     return (
-        <NavigationContainer>
-            <Stack.Navigator>
-                <Stack.Screen name="Welcome" component={Welcome} options={{headerShown: false}}/>
-                <Stack.Screen name="Map" component={Leaflet} options={{headerShown: false}}/>
-                <Stack.Screen name="Compass" component={Compass} options={{headerShown: false}}/>
-            </Stack.Navigator>
+        <View style={styles.body}>
+            <NavigationContainer>
+                <Stack.Navigator>
+                    <Stack.Screen name="Welcome" component={Welcome} options={{headerShown: false}}/>
+                    <Stack.Screen name="Map" component={Leaflet} options={{headerShown: false}}/>
+                    <Stack.Screen name="Compass" component={Compass} options={{headerShown: false}}/>
+                </Stack.Navigator>
 
-            <View onLayout={onLayoutRootView}></View>
-        </NavigationContainer>
+                <View onLayout={onLayoutRootView}></View>
+            </NavigationContainer>
+            <StatusBar translucent={false} backgroundColor={"#fff"}/>
+        </View>
     );
 }
+
+const styles = StyleSheet.create({
+    body: {
+        flex: 1,
+    },
+});
