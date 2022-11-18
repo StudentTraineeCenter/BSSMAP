@@ -16,7 +16,7 @@ const Welcome = () => {
     const navigation = useNavigation();
 
     return (
-    <View style={ styles.text }>
+    <View style={styles.text}>
         <Text style={{
             fontSize: 40,
             fontWeight: "bold",
@@ -26,7 +26,7 @@ const Welcome = () => {
             Aplikace na vyhledávání internetových věží ve vašem okolí. 
             Funguje zcela offline pro chvíle bez internetu.
         </Text>
-        <Pressable onPress={() => navigation.navigate("Map")}>
+        <Pressable onPress={() => navigation.navigate("Providers")}>
             <Text style={{color: "#5263A0", fontSize: 20 }}>
                 Operátoři →
             </Text>
