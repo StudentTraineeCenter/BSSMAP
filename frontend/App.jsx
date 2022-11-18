@@ -9,6 +9,7 @@ import { View, StyleSheet } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 
 import Welcome from './components/Welcome/Welcome';
+import Providers from './components/Providers/Providers';
 
 
 const Stack = createNativeStackNavigator();
@@ -41,6 +42,7 @@ export default function App() {
             <NavigationContainer>
                 <Stack.Navigator>
                     <Stack.Screen name="Welcome" component={Welcome} options={{headerShown: false}}/>
+                    <Stack.Screen name="Providers" component={Providers} options={{headerShown: false}}/>
                     <Stack.Screen name="Map" component={Leaflet} options={{headerShown: false}}/>
                     <Stack.Screen name="Compass" component={Compass} options={{headerShown: false}}/>
                 </Stack.Navigator>
