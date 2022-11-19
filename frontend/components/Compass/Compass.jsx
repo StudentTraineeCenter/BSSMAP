@@ -14,6 +14,29 @@ const Compass = () => {
     });
     const [subscription, setSubscription] = useState(null);
     const [angleX, setAngleX] = useState(0);
+    const [userLoc, setuserLoc] = useState({
+        position: {
+            lat: 49.88865,
+            lng: 15.41015
+        }
+    });
+    const [targetLoc, setTargetLoc] = useState({
+        position: {
+            lat: 50.88865,
+            lng: 16.41015
+        }
+    });
+    const [angle, setAngle] = useState(0)
+    const [realY, setRealY] = useState(threeAxisData.y)
+
+    useEffect(() => {
+        setRealY(realY - threeAxisData.y)
+        setAngle((Math.atan2(targetLoc.position.lat - userLoc.position.lat, targetLoc.position.lng - userLoc.position.lng) * 180 / Math.PI) - realY);
+    }, [threeAxisData])
+
+    useEffect(() => {
+        console.log(angle)
+    }, [angle])
 
     const _fast = () => {
         Gyroscope.setUpdateInterval(16);
