@@ -25,27 +25,31 @@ const styles = StyleSheet.create({
     }
 })
 
-const Providers = () => {
-    const navigation = useNavigation();
-
+const Providers = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <Text style={{
                 fontSize: 40,
-                fontWeight: "bold",
+                fontFamily: "bold",
                 color: "#5263A0"
             }}>Operátoři</Text>
 
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Map")}>
+            <TouchableOpacity 
+                style={styles.button} 
+                onPress={() => navigation.navigate("Map", { provider: 1 })}>
                 <Text style={styles.text}>O2</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Map")}>
-                <Text style={styles.text}>Vodafone</Text>
+            <TouchableOpacity 
+                style={styles.button} 
+                onPress={() => navigation.navigate("Map", { provider: 2 })}>
+                <Text style={styles.text}>T-Mobile</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Map")}>
-                <Text style={styles.text}>T-Mobile</Text>
+            <TouchableOpacity 
+                style={styles.button} 
+                onPress={() => navigation.navigate("Map", { provider: 3 })}>
+                <Text style={styles.text}>Vodafone</Text>
             </TouchableOpacity>
 
             <Text style={{color: "#5263A0", fontSize: 15, margin: 15}}>

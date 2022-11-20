@@ -5,8 +5,8 @@ import {View} from "react-native";
 import celltowers from "../../db/celltowers.json";
 import Navbar from "../Navbar/Navbar";
 
-const Leaflet = () => {
-    const [provider, setProvider] = useState(null);
+const Leaflet = ({ navigation, route }) => {
+    // const [provider, setProvider] = useState(null);
     const [mapMarkers, setMapMarkers] = useState(null);
     const [userLoc, setuserLoc] = useState({
         position: {
@@ -59,9 +59,9 @@ const Leaflet = () => {
 
     useEffect(() => {
         setCelltowersInRange(Array.from(celltowers)
-            .filter(tower => tower.operators.includes(provider === 1 ? "o2" : provider === 2 ? "tmobile" : provider === 3 ? "vodafone" : provider === 4 ? "poda" : null))
+            .filter(tower => tower.operators.includes(route.params.provider === 1 ? "o2" : route.params.provider === 2 ? "tmobile" : route.params.provider === 3 ? "vodafone" : route.params.provider === 4 ? "poda" : null))
             .filter(tower => userLoc.position.lng + 0.16 > tower.lng && userLoc.position.lng - 0.16 < tower.lng && userLoc.position.lat + 0.1 > tower.lat && userLoc.position.lat - 0.1 < tower.lat));
-    }, [provider]);
+    }, [route.params.provider]);
 
     useEffect(() => {
         if (celltowersInRange === null || celltowersInRange === undefined || celltowersInRange[0] === undefined) {
@@ -137,11 +137,6 @@ const Leaflet = () => {
 
     return (
         <View style={{backgroundColor: "black", flex: 1}}>
-            <View>
-                <Navbar func={((provider) => {
-                setProvider(provider);
-            })}/>
-            </View>
             <ExpoLeaflet
                 backgroundColor={"white"}
                 onMessage={(message) => ""}
@@ -174,9 +169,11 @@ const Leaflet = () => {
                 }}
                 zoom={locationLoaded ? 15 : 6}
             />
+            <View>
+                <Navbar provider={route.params.provider}/>
+            </View>
         </View>
     );
-
 }
 
 export default Leaflet;
