@@ -1,15 +1,14 @@
-import React, {useEffect, useState} from "react";
-import {Text, View} from "react-native";
-import {Gyroscope} from 'expo-sensors';
+import React, { useEffect, useState } from "react";
+import { Text, View } from "react-native";
+import { Gyroscope } from "expo-sensors";
 import Navbar from "../Navbar/Navbar";
 
 import { defaultStyles } from "../styles/defaultStyles";
 
 import celltowers from "../../db/celltowers.json";
-import * as Location from 'expo-location';
+import * as Location from "expo-location";
 
-const Compass = () => {
-    const [provider, setProvider] = useState(null);
+const Compass = ({ navigation, route }) => {
     const [threeAxisData, setThreeAxisData] = useState({
         x: 0,
         y: 0,
@@ -25,52 +24,64 @@ const Compass = () => {
     const [closestMarker, setClosestMarker] = useState({
         position: {
             lat: null,
-            lng: null
-        }
+            lng: null,
+        },
     });
     const [AngleToClosestCellTower, setAngleToClosestCellTower] = useState(null);
-
 
     // TODO: remove this and replace it by getting it from the same place you'll get it in Leaflet.jsx
     useEffect(() => {
         const getCurrentPosition = async () => {
-            let {status} = await Location.requestForegroundPermissionsAsync();
-            if (status !== 'granted') {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== "granted") {
                 return;
             }
 
             return Location.getCurrentPositionAsync({});
-        }
+        };
 
         getCurrentPosition().then((location) => {
             setuserLoc({
-                    position: {
-                        lat: location.coords.latitude,
-                        lng: location.coords.longitude,
-                    }
-                });
+                position: {
+                    lat: location.coords.latitude,
+                    lng: location.coords.longitude,
+                },
+            });
             setLocationLoaded(true);
         });
     }, []);
     // TODO: remove this and replace it by getting it from the same place you'll get it in Leaflet.jsx
     useEffect(() => {
-        if (provider == null) {
+        if (route.params.provider == null) {
             setCelltowersList([]);
             return;
         }
-        setCelltowersList(Array.from(celltowers)
-            .filter(tower => tower.operators.includes(provider === 1 ? "o2" : provider === 2 ? "tmobile" : provider === 3 ? "vodafone" : provider === 4 ? "poda" : [])));
-    }, [provider]);
+        setCelltowersList(
+            Array.from(celltowers).filter((tower) =>
+                tower.operators.includes(
+                    route.params.provider === 1
+                        ? "o2"
+                        : route.params.provider === 2
+                        ? "tmobile"
+                        : route.params.provider === 3
+                        ? "vodafone"
+                        : route.params.provider === 4
+                        ? "poda"
+                        : []
+                )
+            )
+        );
+    }, [route.params.provider]);
     // TODO: remove this and replace it by getting it from the same place you'll get it in Leaflet.jsx
     useEffect(() => {
         if (celltowersList === null || celltowersList === undefined || celltowersList[0] === undefined || !locationLoaded) {
             setClosestMarker({
-                position:{
+                position: {
                     lat: null,
                     lng: null,
-                }
+                },
             });
-            return
+            return;
         }
 
         // console.log("");
@@ -81,26 +92,29 @@ const Compass = () => {
         let tempClosestCelltower = {
             position: {
                 lat: celltowersList[0].lat,
-                lng: celltowersList[0].lng
-            }
+                lng: celltowersList[0].lng,
+            },
         };
-        
+
         celltowersList.forEach((celltower, index) => {
             let currentDist = [Math.abs(userLoc.position.lat - celltower.lat), Math.abs(userLoc.position.lng - celltower.lng)];
-            let closestDist = [Math.abs(userLoc.position.lat - tempClosestCelltower.position.lat), Math.abs(userLoc.position.lng - tempClosestCelltower.position.lng)];
+            let closestDist = [
+                Math.abs(userLoc.position.lat - tempClosestCelltower.position.lat),
+                Math.abs(userLoc.position.lng - tempClosestCelltower.position.lng),
+            ];
 
             // console.log("/// NEW CYCLE ///");
             // console.log("Current cycled marker's distance from the user:", currentDist, Math.sqrt(currentDist[0]**2 + currentDist[1]**2));
             // console.log("Closest marker's distance from the user:", closestDist, Math.sqrt(closestDist[0]**2 + closestDist[1]**2));
 
-            if (Math.sqrt(currentDist[0]**2 + currentDist[1]**2) < Math.sqrt(closestDist[0]**2 + closestDist[1]**2)){
+            if (Math.sqrt(currentDist[0] ** 2 + currentDist[1] ** 2) < Math.sqrt(closestDist[0] ** 2 + closestDist[1] ** 2)) {
                 // console.log("|||CHANGED CLOSEST CELLTOWER|||");
                 tempClosestCelltower = {
                     position: {
                         lat: celltower.lat,
-                        lng: celltower.lng
+                        lng: celltower.lng,
                     },
-                    index: index
+                    index: index,
                 };
             }
         });
@@ -108,23 +122,23 @@ const Compass = () => {
         setClosestMarker({
             position: {
                 lat: tempClosestCelltower.position.lat,
-                lng: tempClosestCelltower.position.lng
-            }
+                lng: tempClosestCelltower.position.lng,
+            },
         });
     }, [celltowersList, userLoc]);
 
-    useEffect(()=>{
-        if (!locationLoaded || closestMarker == null || closestMarker.position.lat == null || closestMarker.position.lng == null){
+    useEffect(() => {
+        if (!locationLoaded || closestMarker == null || closestMarker.position.lat == null || closestMarker.position.lng == null) {
             return;
         }
         let tempCoords = {
-            lat:  closestMarker.position.lat - userLoc.position.lat,
-            lng:  closestMarker.position.lng - userLoc.position.lng,
-        }
+            lat: closestMarker.position.lat - userLoc.position.lat,
+            lng: closestMarker.position.lng - userLoc.position.lng,
+        };
         let angle = Math.atan2(tempCoords.lat, tempCoords.lng);
         setAngleToClosestCellTower(angle);
         console.log("Angle to cosest marker in radians:", angle);
-    },[closestMarker, userLoc])
+    }, [closestMarker, userLoc]);
 
     const _fast = () => {
         Gyroscope.setUpdateInterval(16);
@@ -132,7 +146,7 @@ const Compass = () => {
 
     const _subscribe = () => {
         setSubscription(
-            Gyroscope.addListener(gyroscopeData => {
+            Gyroscope.addListener((gyroscopeData) => {
                 setThreeAxisData(gyroscopeData);
             })
         );
@@ -150,22 +164,19 @@ const Compass = () => {
     }, []);
 
     useEffect(() => {
-        setAngleX(angleX + threeAxisData.y)
-    }, [threeAxisData])
+        setAngleX(angleX + threeAxisData.y);
+    }, [threeAxisData]);
 
     return (
-        <View style={{backgroundColor: "white", flex: 1, justifyContent: "center", alignItems: "center"}}>
-        <View>
-            <Navbar func={((provider) => {
-                setProvider(provider);
-            })}/>
-        </View>
-
-            <View style={{backgroundColor: "white", flex: 1, justifyContent: "center", alignItems: "center"}}>
+        <View style={{ backgroundColor: "white", flex: 1 }}>
+            <View style={{ backgroundColor: "white", flex: 1, justifyContent: "center", alignItems: "center" }}>
                 <Text style={defaultStyles.Text}>{angleX < 0 ? "Turn left" : "Turn right"}</Text>
             </View>
+            <View>
+                <Navbar provider={route.params.provider} />
+            </View>
         </View>
-    )
-}
+    );
+};
 
 export default Compass;
