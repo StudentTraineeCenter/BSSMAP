@@ -28,6 +28,9 @@ const Compass = ({ navigation, route }) => {
         },
     });
     const [AngleToClosestCellTower, setAngleToClosestCellTower] = useState(null);
+    const [distance, setDistance] = useState(null);
+
+    const earthRadius = 6371;
 
     // TODO: remove this and replace it by getting it from the same place you'll get it in Leaflet.jsx
     useEffect(() => {
@@ -71,7 +74,7 @@ const Compass = ({ navigation, route }) => {
                 )
             )
         );
-    }, [route.params.provider]);
+    }, []);
     // TODO: remove this and replace it by getting it from the same place you'll get it in Leaflet.jsx
     useEffect(() => {
         if (celltowersList === null || celltowersList === undefined || celltowersList[0] === undefined || !locationLoaded) {
@@ -125,7 +128,32 @@ const Compass = ({ navigation, route }) => {
                 lng: tempClosestCelltower.position.lng,
             },
         });
-    }, [celltowersList, userLoc]);
+    }, [celltowersList, userLoc, locationLoaded]);
+
+    // calculates distance from the user to the closest CT
+    function deg2rad(deg) {
+        return deg * (Math.PI / 180);
+    }
+    useEffect(() => {
+        if (!locationLoaded || closestMarker == null || closestMarker.position.lat == null || closestMarker.position.lng == null) return;
+        
+        let tempCoords = {
+            lat: deg2rad(closestMarker.position.lat - userLoc.position.lat),
+            lng: deg2rad(closestMarker.position.lng - userLoc.position.lng),
+        };
+
+        let a =
+            Math.sin(tempCoords.lat / 2) * Math.sin(tempCoords.lat / 2) +
+            Math.cos(deg2rad(userLoc.position.lat)) *
+            Math.cos(deg2rad(closestMarker.position.lat)) *
+            Math.sin(tempCoords.lng / 2) *
+            Math.sin(tempCoords.lng / 2);
+
+        let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        setDistance(earthRadius * c);
+        console.log("distance to closest cell tower:", Math.round(earthRadius * c * 1000), "m");
+    }, [closestMarker, userLoc]);
 
     useEffect(() => {
         if (!locationLoaded || closestMarker == null || closestMarker.position.lat == null || closestMarker.position.lng == null) {
