@@ -19,7 +19,7 @@ const Welcome = () => {
     <View style={styles.text}>
         <Text style={{
             fontSize: 40,
-            fontWeight: "bold",
+            fontFamily: "bold",
             color: "#5263A0"
         }}>BSSMAP</Text>
         <Text style={{color: "#5263A0", fontSize: 15}}>
