@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { Text, View } from "react-native";
-import { Gyroscope } from "expo-sensors";
+import React, {useEffect, useState} from "react";
+import {Text, View} from "react-native";
+import {Magnetometer} from "expo-sensors";
 import Navbar from "../Navbar/Navbar";
 
-import { defaultStyles } from "../styles/defaultStyles";
+import {defaultStyles} from "../styles/defaultStyles";
 
 import celltowers from "../../db/celltowers.json";
 import * as Location from "expo-location";
 
-const Compass = ({ navigation, route }) => {
+const Compass = ({navigation, route}) => {
     const [threeAxisData, setThreeAxisData] = useState({
         x: 0,
         y: 0,
@@ -33,9 +33,11 @@ const Compass = ({ navigation, route }) => {
     const earthRadius = 6371;
 
     // TODO: remove this and replace it by getting it from the same place you'll get it in Leaflet.jsx
+    // IN PROGRESS
     useEffect(() => {
+        console.log(route)
         const getCurrentPosition = async () => {
-            let { status } = await Location.requestForegroundPermissionsAsync();
+            let {status} = await Location.requestForegroundPermissionsAsync();
             if (status !== "granted") {
                 return;
             }
@@ -53,6 +55,7 @@ const Compass = ({ navigation, route }) => {
             setLocationLoaded(true);
         });
     }, []);
+
     // TODO: remove this and replace it by getting it from the same place you'll get it in Leaflet.jsx
     useEffect(() => {
         if (route.params.provider == null) {
@@ -65,12 +68,12 @@ const Compass = ({ navigation, route }) => {
                     route.params.provider === 1
                         ? "o2"
                         : route.params.provider === 2
-                        ? "tmobile"
-                        : route.params.provider === 3
-                        ? "vodafone"
-                        : route.params.provider === 4
-                        ? "poda"
-                        : []
+                            ? "tmobile"
+                            : route.params.provider === 3
+                                ? "vodafone"
+                                : route.params.provider === 4
+                                    ? "poda"
+                                    : []
                 )
             )
         );
@@ -134,9 +137,10 @@ const Compass = ({ navigation, route }) => {
     function deg2rad(deg) {
         return deg * (Math.PI / 180);
     }
+
     useEffect(() => {
         if (!locationLoaded || closestMarker == null || closestMarker.position.lat == null || closestMarker.position.lng == null) return;
-        
+
         let tempCoords = {
             lat: deg2rad(closestMarker.position.lat - userLoc.position.lat),
             lng: deg2rad(closestMarker.position.lng - userLoc.position.lng),
@@ -169,14 +173,12 @@ const Compass = ({ navigation, route }) => {
     }, [closestMarker, userLoc]);
 
     const _fast = () => {
-        Gyroscope.setUpdateInterval(16);
+        Magnetometer.setUpdateInterval(16);
     };
 
     const _subscribe = () => {
         setSubscription(
-            Gyroscope.addListener((gyroscopeData) => {
-                setThreeAxisData(gyroscopeData);
-            })
+            Magnetometer.addListener(setThreeAxisData)
         );
     };
 
@@ -193,15 +195,16 @@ const Compass = ({ navigation, route }) => {
 
     useEffect(() => {
         setAngleX(angleX + threeAxisData.y);
+        console.log(threeAxisData)
     }, [threeAxisData]);
 
     return (
-        <View style={{ backgroundColor: "white", flex: 1 }}>
-            <View style={{ backgroundColor: "white", flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <View style={{backgroundColor: "white", flex: 1}}>
+            <View style={{backgroundColor: "white", flex: 1, justifyContent: "center", alignItems: "center"}}>
                 <Text style={defaultStyles.Text}>{angleX < 0 ? "Turn left" : "Turn right"}</Text>
             </View>
             <View>
-                <Navbar provider={route.params.provider} />
+                <Navbar provider={route.params.provider}/>
             </View>
         </View>
     );

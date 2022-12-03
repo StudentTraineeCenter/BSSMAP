@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { ExpoLeaflet } from "expo-leaflet";
+import React, {useEffect, useState} from "react";
+import {ExpoLeaflet} from "expo-leaflet";
 import * as Location from "expo-location";
-import { View } from "react-native";
+import {View} from "react-native";
 import celltowers from "../../db/celltowers.json";
 import Navbar from "../Navbar/Navbar";
 
-const Leaflet = ({ navigation, route }) => {
+const Leaflet = ({navigation, route, props}) => {
     // const [provider, setProvider] = useState(null);
     const [mapMarkers, setMapMarkers] = useState(null);
     const [userLoc, setuserLoc] = useState({
@@ -25,8 +25,12 @@ const Leaflet = ({ navigation, route }) => {
     });
 
     useEffect(() => {
+        console.log(props)
+    }, [props])
+
+    useEffect(() => {
         const getCurrentPosition = async () => {
-            let { status } = await Location.requestForegroundPermissionsAsync();
+            let {status} = await Location.requestForegroundPermissionsAsync();
             if (status !== "granted") {
                 setLocationNotGranted("Permission to access location was denied");
                 return;
@@ -64,12 +68,12 @@ const Leaflet = ({ navigation, route }) => {
                             route.params.provider === 1
                                 ? "o2"
                                 : route.params.provider === 2
-                                ? "tmobile"
-                                : route.params.provider === 3
-                                ? "vodafone"
-                                : route.params.provider === 4
-                                ? "poda"
-                                : null
+                                    ? "tmobile"
+                                    : route.params.provider === 3
+                                        ? "vodafone"
+                                        : route.params.provider === 4
+                                            ? "poda"
+                                            : null
                         )
                     )
                     .filter(
@@ -160,7 +164,7 @@ const Leaflet = ({ navigation, route }) => {
     }, [mapMarkers, userLoc]);
 
     return (
-        <View style={{ backgroundColor: "black", flex: 1 }}>
+        <View style={{backgroundColor: "black", flex: 1}}>
             <ExpoLeaflet
                 backgroundColor={"white"}
                 onMessage={(message) => ""}
@@ -185,17 +189,17 @@ const Leaflet = ({ navigation, route }) => {
                                 size: [32, 32],
                             })
                         : locationLoaded
-                        ? [
-                            {
-                                position: {
-                                    lat: userLoc.position.lat,
-                                    lng: userLoc.position.lng,
+                            ? [
+                                {
+                                    position: {
+                                        lat: userLoc.position.lat,
+                                        lng: userLoc.position.lng,
+                                    },
+                                    icon: "<span>📍</span>",
+                                    size: [32, 32],
                                 },
-                                icon: "<span>📍</span>",
-                                size: [32, 32],
-                            },
-                        ]
-                        : []
+                            ]
+                            : []
                 }
                 mapCenterPosition={{
                     lat: userLoc.position.lat,
@@ -204,7 +208,7 @@ const Leaflet = ({ navigation, route }) => {
                 zoom={locationLoaded ? 15 : 6}
             />
             <View>
-                <Navbar provider={route.params.provider} />
+                <Navbar provider={route.params.provider}/>
             </View>
         </View>
     );

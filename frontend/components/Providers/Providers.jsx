@@ -1,5 +1,4 @@
-import { useNavigation } from "@react-navigation/native"
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import {StyleSheet, Text, TouchableOpacity, View} from "react-native"
 
 
 const styles = StyleSheet.create({
@@ -25,7 +24,7 @@ const styles = StyleSheet.create({
     }
 })
 
-const Providers = ({ navigation }) => {
+const Providers = ({navigation}) => {
     return (
         <View style={styles.container}>
             <Text style={{
@@ -34,26 +33,26 @@ const Providers = ({ navigation }) => {
                 color: "#5263A0"
             }}>Operátoři</Text>
 
-            <TouchableOpacity 
-                style={styles.button} 
-                onPress={() => navigation.navigate("Map", { provider: 1 })}>
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => navigation.navigate("Map", {provider: 1})}>
                 <Text style={styles.text}>O2</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity 
-                style={styles.button} 
-                onPress={() => navigation.navigate("Map", { provider: 2 })}>
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => navigation.navigate("Map", {provider: 2})}>
                 <Text style={styles.text}>T-Mobile</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity 
-                style={styles.button} 
-                onPress={() => navigation.navigate("Map", { provider: 3 })}>
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => navigation.navigate("Map", {provider: 3})}>
                 <Text style={styles.text}>Vodafone</Text>
             </TouchableOpacity>
 
             <Text style={{color: "#5263A0", fontSize: 15, margin: 15}}>
-                Někteří operátoři využívají sítě jiných operátorů, pokud nevíte, 
+                Někteří operátoři využívají sítě jiných operátorů, pokud nevíte,
                 kterou síť váš operátor využívá, kontaktujte ho.
             </Text>
         </View>
