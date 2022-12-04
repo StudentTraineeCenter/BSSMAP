@@ -6,7 +6,6 @@ import celltowers from "../../db/celltowers.json";
 import Navbar from "../Navbar/Navbar";
 
 const Leaflet = ({navigation, route, props}) => {
-    // const [provider, setProvider] = useState(null);
     const [mapMarkers, setMapMarkers] = useState(null);
     const [userLoc, setuserLoc] = useState({
         position: {
@@ -26,8 +25,9 @@ const Leaflet = ({navigation, route, props}) => {
 
     useEffect(() => {
         console.log(props)
-    }, [props])
+    }, [props]);
 
+    // gets user location
     useEffect(() => {
         const getCurrentPosition = async () => {
             let {status} = await Location.requestForegroundPermissionsAsync();
@@ -50,6 +50,7 @@ const Leaflet = ({navigation, route, props}) => {
         });
     }, []);
 
+    // loads map
     const mapLayers = [
         {
             attribution: '&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
@@ -59,6 +60,7 @@ const Leaflet = ({navigation, route, props}) => {
         },
     ];
 
+    // makes a list of CTs using the current provider and distance
     useEffect(() => {
         if (locationLoaded) {
             setCelltowersInRange(
@@ -87,6 +89,7 @@ const Leaflet = ({navigation, route, props}) => {
         }
     }, [route.params.provider, locationLoaded]);
 
+    // displays the CT list
     useEffect(() => {
         if (celltowersInRange === null || celltowersInRange === undefined || celltowersInRange[0] === undefined) {
             setMapMarkers([]);
@@ -106,7 +109,8 @@ const Leaflet = ({navigation, route, props}) => {
             })
         );
     }, [celltowersInRange]);
-
+    
+    // figures out closest CT and removes its icon (a new icon is displayed later)
     useEffect(() => {
         if (mapMarkers === null || mapMarkers === undefined || mapMarkers[0] === undefined) {
             setClosestMarker({
@@ -169,6 +173,7 @@ const Leaflet = ({navigation, route, props}) => {
                 backgroundColor={"white"}
                 onMessage={(message) => ""}
                 mapLayers={mapLayers}
+                // logic for displaying CTs and user location (adds icon for the closest CT)
                 mapMarkers={
                     Array.isArray(mapMarkers) && mapMarkers.length > 0
                         ? mapMarkers

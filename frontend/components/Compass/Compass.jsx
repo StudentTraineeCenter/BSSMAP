@@ -17,7 +17,6 @@ const Compass = ({navigation, route}) => {
     const [subscription, setSubscription] = useState(null);
     const [angleX, setAngleX] = useState(0);
 
-    // TODO: remove the vars and replace it by getting it from the same place you'll get it in Leaflet.jsx
     const [userLoc, setuserLoc] = useState(null);
     const [locationLoaded, setLocationLoaded] = useState(false);
     const [celltowersList, setCelltowersList] = useState([]);
@@ -32,10 +31,9 @@ const Compass = ({navigation, route}) => {
 
     const earthRadius = 6371;
 
-    // TODO: remove this and replace it by getting it from the same place you'll get it in Leaflet.jsx
-    // IN PROGRESS
+    // gets user location
     useEffect(() => {
-        console.log(route)
+        // console.log(route)
         const getCurrentPosition = async () => {
             let {status} = await Location.requestForegroundPermissionsAsync();
             if (status !== "granted") {
@@ -56,7 +54,7 @@ const Compass = ({navigation, route}) => {
         });
     }, []);
 
-    // TODO: remove this and replace it by getting it from the same place you'll get it in Leaflet.jsx
+    // makes a list of CTs using the current provider
     useEffect(() => {
         if (route.params.provider == null) {
             setCelltowersList([]);
@@ -78,7 +76,8 @@ const Compass = ({navigation, route}) => {
             )
         );
     }, []);
-    // TODO: remove this and replace it by getting it from the same place you'll get it in Leaflet.jsx
+
+    // figures out closest CT
     useEffect(() => {
         if (celltowersList === null || celltowersList === undefined || celltowersList[0] === undefined || !locationLoaded) {
             setClosestMarker({
@@ -89,11 +88,6 @@ const Compass = ({navigation, route}) => {
             });
             return;
         }
-
-        // console.log("");
-        // console.log("");
-        // console.log("---Start of new search---");
-        // console.log(celltowersList[0], userLoc);
 
         let tempClosestCelltower = {
             position: {
@@ -109,12 +103,7 @@ const Compass = ({navigation, route}) => {
                 Math.abs(userLoc.position.lng - tempClosestCelltower.position.lng),
             ];
 
-            // console.log("/// NEW CYCLE ///");
-            // console.log("Current cycled marker's distance from the user:", currentDist, Math.sqrt(currentDist[0]**2 + currentDist[1]**2));
-            // console.log("Closest marker's distance from the user:", closestDist, Math.sqrt(closestDist[0]**2 + closestDist[1]**2));
-
             if (Math.sqrt(currentDist[0] ** 2 + currentDist[1] ** 2) < Math.sqrt(closestDist[0] ** 2 + closestDist[1] ** 2)) {
-                // console.log("|||CHANGED CLOSEST CELLTOWER|||");
                 tempClosestCelltower = {
                     position: {
                         lat: celltower.lat,
@@ -133,11 +122,10 @@ const Compass = ({navigation, route}) => {
         });
     }, [celltowersList, userLoc, locationLoaded]);
 
-    // calculates distance from the user to the closest CT
     function deg2rad(deg) {
         return deg * (Math.PI / 180);
     }
-
+    // calculates the DISTANCE from the user to the closest CT
     useEffect(() => {
         if (!locationLoaded || closestMarker == null || closestMarker.position.lat == null || closestMarker.position.lng == null) return;
 
@@ -159,6 +147,7 @@ const Compass = ({navigation, route}) => {
         console.log("distance to closest cell tower:", Math.round(earthRadius * c * 1000), "m");
     }, [closestMarker, userLoc]);
 
+    // calculates the ANGLE from the user to the closest CT might not work yet
     useEffect(() => {
         if (!locationLoaded || closestMarker == null || closestMarker.position.lat == null || closestMarker.position.lng == null) {
             return;
@@ -169,7 +158,7 @@ const Compass = ({navigation, route}) => {
         };
         let angle = Math.atan2(tempCoords.lat, tempCoords.lng);
         setAngleToClosestCellTower(angle);
-        console.log("Angle to cosest marker in radians:", angle);
+        console.log("Angle to cosest marker in degrees:", deg2rad(angle), angle);
     }, [closestMarker, userLoc]);
 
     const _fast = () => {
@@ -195,7 +184,7 @@ const Compass = ({navigation, route}) => {
 
     useEffect(() => {
         setAngleX(angleX + threeAxisData.y);
-        console.log(threeAxisData)
+        // console.log(threeAxisData)
     }, [threeAxisData]);
 
     return (
