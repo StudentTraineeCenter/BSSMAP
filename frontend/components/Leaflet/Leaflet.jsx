@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ExpoLeaflet } from "expo-leaflet";
 import * as Location from "expo-location";
-import { View } from "react-native";
+import { Pressable, View, Text } from "react-native";
 import celltowers from "../../db/celltowers.json";
 import Navbar from "../Navbar/Navbar";
 
@@ -17,12 +17,18 @@ const Leaflet = ({ navigation, route }) => {
   const [celltowersInRange, setCelltowersInRange] = useState(null);
   const [locationLoaded, setLocationLoaded] = useState(false);
   const [locationNotGranted, setLocationNotGranted] = useState(null);
+  const [distance, setDistance] = useState(1);
   const [closestMarker, setClosestMarker] = useState({
     position: {
       lat: null,
       lng: null,
     },
   });
+
+  useEffect(() => {
+    const distance = route.params.distance
+    setDistance(0.01 * distance)
+  }, [route.params.distance])
 
   useEffect(() => {
     const getCurrentPosition = async () => {
@@ -75,10 +81,10 @@ const Leaflet = ({ navigation, route }) => {
           )
           .filter(
             (tower) =>
-              userLoc.position.lng + 0.16 > tower.lng &&
-              userLoc.position.lng - 0.16 < tower.lng &&
-              userLoc.position.lat + 0.1 > tower.lat &&
-              userLoc.position.lat - 0.1 < tower.lat
+              userLoc.position.lng + distance*1.6 > tower.lng &&
+              userLoc.position.lng - distance*1.6 < tower.lng &&
+              userLoc.position.lat + distance > tower.lat &&
+              userLoc.position.lat - distance < tower.lat
           )
       );
     }
